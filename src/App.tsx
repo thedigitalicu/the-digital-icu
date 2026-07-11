@@ -84,7 +84,11 @@ export default function App() {
     return saved;
   });
   const [whatsappNumber, setWhatsappNumber] = useState(() => {
-    return localStorage.getItem("icu_whatsapp_number") || "+1 (555) 019-9000";
+    const saved = localStorage.getItem("icu_whatsapp_number");
+    if (!saved || saved === "+1 (555) 019-9000") {
+      return "923213499199";
+    }
+    return saved;
   });
   const [whatsappText, setWhatsappText] = useState(() => {
     return localStorage.getItem("icu_whatsapp_text") || "Hello! I just completed my Digital ICU revenue diagnostic and want to stop the bleed. Can we chat?";
