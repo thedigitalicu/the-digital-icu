@@ -1,0 +1,6 @@
+{
+  "name": "The Digital ICU",
+  "description": "High-conversion digital revenue optimization landing page for medical content creators.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

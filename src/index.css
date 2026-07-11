@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@200;300;400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-bg1: #020306;
+  --color-bg2: #05070D;
+  --color-bg3: #090C16;
+  --color-bg4: #0E1220;
+  --color-bg5: #13192B;
+  
+  --color-t1: #F0F4FF;
+  --color-t2: #D1DBEC;
+  --color-tm: #6B7C9C;
+  --color-tg: #2F3B5C;
+  
+  --color-b1: rgba(255, 255, 255, 0.04);
+  --color-b2: rgba(255, 255, 255, 0.08);
+  --color-b3: rgba(255, 255, 255, 0.12);
+  
+  --color-teal-accent: #0DF5C4;
+  --color-teal-10: rgba(13, 245, 196, 0.08);
+  --color-teal-18: rgba(13, 245, 196, 0.16);
+  --color-teal-b: rgba(13, 245, 196, 0.04);
+  
+  --color-red-accent: #FF3E55;
+  --color-red-d: rgba(255, 62, 85, 0.08);
+  --color-red-b: rgba(255, 62, 85, 0.16);
+  
+  --color-amb-accent: #FFA21F;
+  --color-amb-d: rgba(255, 162, 31, 0.08);
+  
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #05070D;
+  color: #D1DBEC;
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom Surgical Pulse Glow & Grid Animations */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(13, 245, 196, 0.15);
+    border-color: rgba(13, 245, 196, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(13, 245, 196, 0.3);
+    border-color: rgba(13, 245, 196, 0.5);
+  }
+}
+
+@keyframes pulseGlowRed {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 62, 85, 0.15);
+    border-color: rgba(255, 62, 85, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(255, 62, 85, 0.3);
+    border-color: rgba(255, 62, 85, 0.5);
+  }
+}
+
+.clinical-card-glow {
+  animation: pulseGlow 4s infinite ease-in-out;
+}
+
+.warning-card-glow {
+  animation: pulseGlowRed 4s infinite ease-in-out;
+}
+
+/* Medical Grid Mesh Pattern background utility */
+.medical-grid-bg {
+  background-image: radial-gradient(rgba(13, 245, 196, 0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.medical-grid-red-bg {
+  background-image: radial-gradient(rgba(255, 62, 85, 0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Custom premium scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #020306;
+}
+::-webkit-scrollbar-thumb {
+  background: #0F1424;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #0DF5C4;
+}
+
+/* EKG draw animation */
+@keyframes drawEKG {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.animate-draw-ekg {
+  animation: drawEKG 3s ease 1.3s forwards;
+}
+
