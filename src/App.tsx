@@ -175,10 +175,10 @@ export default function App() {
     <div className="bg-bg2 text-t2 font-sans selection:bg-teal-accent selection:text-bg1 min-h-screen relative overflow-x-hidden medical-grid-bg">
       
       {/* FIXED NAVIGATION */}
-      <nav id="nav" className={`fixed top-0 left-0 right-0 z-100 h-[66px] flex items-center transition-all ${isNavScrolled ? "bg-bg1/95 border-b border-b3/25 shadow-[0_4px_30px_rgba(0,0,0,0.5)] backdrop-blur-md" : "bg-bg1/90 border-b border-b1"}`}>
+      <nav id="nav" className={`fixed top-0 left-0 right-0 z-100 h-[66px] flex items-center transition-all ${isNavScrolled ? "bg-white/95 border-b border-neutral-100 shadow-[0_4px_25px_rgba(0,0,0,0.02)] backdrop-blur-md" : "bg-white/90 border-b border-b1"}`}>
         <div className="max-w-[1160px] w-full mx-auto px-5 flex items-center justify-between gap-5">
           <a href="#" className="flex items-center gap-[9px] text-none group">
-            <div className="w-[32px] h-[32px] bg-gradient-to-br from-teal-accent to-emerald-500 rounded-lg flex items-center justify-center font-mono text-[10px] font-bold text-bg1 tracking-wider shadow-[0_0_15px_rgba(13,245,196,0.2)] group-hover:shadow-[0_0_25px_rgba(13,245,196,0.5)] transition-all">
+            <div className="w-[32px] h-[32px] bg-gradient-to-br from-teal-accent to-teal-accent/80 rounded-lg flex items-center justify-center font-mono text-[10px] font-bold text-white tracking-wider shadow-[0_0_15px_rgba(0,150,136,0.15)] group-hover:shadow-[0_0_25px_rgba(0,150,136,0.35)] transition-all">
               ICU
             </div>
             <span className="font-serif text-[21px] font-semibold text-t1 tracking-wide group-hover:text-teal-accent transition-colors flex items-center gap-1.5">
@@ -216,8 +216,45 @@ export default function App() {
         </div>
       </nav>
 
+      {/* INFINITE RUNNING DIAGNOSTIC MARQUEE (Live premium agency feel) */}
+      <div className="w-full overflow-hidden bg-teal-accent py-3.5 border-y border-b1 relative z-10 shadow-[0_4px_20px_rgba(0,150,136,0.05)] mt-[66px]">
+        <div className="flex whitespace-nowrap min-w-full">
+          <motion.div 
+            initial={{ x: 0 }}
+            animate={{ x: "-50%" }}
+            transition={{ ease: "linear", duration: 32, repeat: Infinity }}
+            className="flex gap-16 pr-16 text-white font-mono text-[11px] uppercase tracking-widest font-semibold"
+          >
+            {[
+              "CLINICAL COMPLIANCE SECURED",
+              "HIPAA COMPLIANT ARCHITECTURE",
+              "ZERO CLINICAL HOUR MONETISATION",
+              "DFY SKOOL CAMPUS DEPLOYMENT",
+              "AI CLINICAL CHATBOT ACTIVE",
+              "AUDIENCE OWNERSHIP INDEPENDENCE",
+              "GLOBAL REVENUE EXTRACTION ENGINE",
+              "CONVERSION METRIC OPTIMISED"
+            ].concat([
+              "CLINICAL COMPLIANCE SECURED",
+              "HIPAA COMPLIANT ARCHITECTURE",
+              "ZERO CLINICAL HOUR MONETISATION",
+              "DFY SKOOL CAMPUS DEPLOYMENT",
+              "AI CLINICAL CHATBOT ACTIVE",
+              "AUDIENCE OWNERSHIP INDEPENDENCE",
+              "GLOBAL REVENUE EXTRACTION ENGINE",
+              "CONVERSION METRIC OPTIMISED"
+            ]).map((item, idx) => (
+              <span key={idx} className="flex items-center gap-2.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                {item}
+              </span>
+            ))}
+          </motion.div>
+        </div>
+      </div>
+
       {/* 3. HERO SECTION */}
-      <section id="hero" className="min-h-screen flex flex-col items-center justify-center px-5 pt-36 pb-20 bg-bg1 relative overflow-hidden text-center">
+      <section id="hero" className="flex flex-col items-center justify-center px-5 pt-14 pb-14 bg-bg1 relative overflow-hidden text-center">
         <div className="absolute inset-0 bg-[radial-gradient(rgba(13,245,196,0.06)_1px,transparent_1px)] bg-[size:28px_28px] opacity-70 pointer-events-none"></div>
         
         <motion.div 
@@ -262,7 +299,7 @@ export default function App() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="w-full max-w-[840px] mx-auto p-2 bg-bg1/80 border border-teal-accent/20 rounded-2xl mb-12 shadow-[0_20px_60px_rgba(0,0,0,0.8),0_0_40px_rgba(13,245,196,0.1)] relative group clinical-card-glow"
+          className="w-full max-w-[840px] mx-auto p-2 bg-bg1/80 border border-teal-accent/20 rounded-2xl mb-12 shadow-[0_30px_70px_rgba(0,0,0,0.06),0_0_30px_rgba(0,150,136,0.02)] relative group clinical-card-glow"
         >
           {/* Diagnostic indicators */}
           <div className="absolute top-5 left-5 bg-red-accent/90 rounded px-2.5 py-1.5 flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-wider text-white z-10 animate-pulse">
@@ -332,22 +369,28 @@ export default function App() {
             PRACTITIONERS ADMITTED FROM INSTITUTIONS INCLUDING
           </div>
           <div className="flex items-center justify-center flex-wrap gap-y-3.5 gap-x-8 text-center">
-            <span className="font-sans text-[14px] font-medium text-white/20 hover:text-white/40 transition-colors">Mayo Clinic</span>
-            <span className="hidden sm:inline w-[1px] h-4 bg-white/10"></span>
-            <span className="font-sans text-[14px] font-medium text-white/20 hover:text-white/40 transition-colors">Cleveland Clinic</span>
-            <span className="hidden sm:inline w-[1px] h-4 bg-white/10"></span>
-            <span className="font-sans text-[14px] font-medium text-white/20 hover:text-white/40 transition-colors">Johns Hopkins</span>
-            <span className="hidden sm:inline w-[1px] h-4 bg-white/10"></span>
-            <span className="font-sans text-[14px] font-medium text-white/20 hover:text-white/40 transition-colors">Stanford Medicine</span>
-            <span className="hidden sm:inline w-[1px] h-4 bg-white/10"></span>
-            <span className="font-sans text-[14px] font-medium text-white/20 hover:text-white/40 transition-colors">Harvard Medical School</span>
+            <span className="font-sans text-[14px] font-medium text-tm/50 hover:text-t1 transition-colors">Mayo Clinic</span>
+            <span className="hidden sm:inline w-[1px] h-4 bg-neutral-200"></span>
+            <span className="font-sans text-[14px] font-medium text-tm/50 hover:text-t1 transition-colors">Cleveland Clinic</span>
+            <span className="hidden sm:inline w-[1px] h-4 bg-neutral-200"></span>
+            <span className="font-sans text-[14px] font-medium text-tm/50 hover:text-t1 transition-colors">Johns Hopkins</span>
+            <span className="hidden sm:inline w-[1px] h-4 bg-neutral-200"></span>
+            <span className="font-sans text-[14px] font-medium text-tm/50 hover:text-t1 transition-colors">Stanford Medicine</span>
+            <span className="hidden sm:inline w-[1px] h-4 bg-neutral-200"></span>
+            <span className="font-sans text-[14px] font-medium text-tm/50 hover:text-t1 transition-colors">Harvard Medical School</span>
           </div>
         </div>
       </section>
 
       {/* 5. VITAL SIGNS (MONITORED REAL-TIME VALUES) */}
       <section id="vitals" className="bg-bg3 border-b border-b2/40 relative">
-        <div className="max-w-[1160px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 lg:divide-x divide-b2/30">
+        <motion.div 
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.65, ease: "easeOut" }}
+          className="max-w-[1160px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 lg:divide-x divide-b2/30"
+        >
           {/* Card 1 */}
           <div className="p-10 flex flex-col justify-between group hover:bg-bg5/20 transition-all duration-300">
             <div>
@@ -412,12 +455,18 @@ export default function App() {
               From just 100 community members at $99/month. Zero new clinical hours. Zero new patients. Zero new content required.
             </p>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* 6. MIRROR (INTAKE NARRATIVE & METRICS) */}
-      <section id="mirror" className="py-24 px-5 bg-bg2 relative">
-        <div className="max-w-[1160px] mx-auto">
+      <section id="mirror" className="py-14 px-5 bg-bg2 relative">
+        <motion.div 
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.65, ease: "easeOut", delay: 0.1 }}
+          className="max-w-[1160px] mx-auto"
+        >
           <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4">
             <span className="w-5.5 h-[1px] bg-teal-accent"></span>
             PATIENT INTAKE REPORT
@@ -428,11 +477,11 @@ export default function App() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
             {/* Written Narrative Case */}
-            <div className="bg-bg3/80 border border-teal-accent/20 border-l-4 border-l-teal-accent rounded-xl p-8 lg:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.7),0_0_20px_rgba(13,245,196,0.02)] hover:border-teal-accent/35 transition-all duration-300">
+            <div className="bg-bg3/80 border border-teal-accent/20 border-l-4 border-l-teal-accent rounded-xl p-8 lg:p-10 shadow-[0_15px_40px_rgba(0,0,0,0.03)] hover:border-teal-accent/35 transition-all duration-300">
               <div className="font-mono text-[9px] uppercase tracking-widest text-tg mb-4">
                 06:30 &middot; TUESDAY MORNING &middot; PATIENT INTAKE
               </div>
-              <div className="space-y-4 text-sm leading-relaxed text-[#7A8A9E] font-light">
+              <div className="space-y-4 text-sm leading-relaxed text-t2/90 font-light">
                 <p>
                   You wake up and check your phone. <strong className="text-t1 font-normal">The video you posted three days ago has hit 2.1 million views.</strong> For a moment, there is that familiar surge.
                 </p>
@@ -476,12 +525,18 @@ export default function App() {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* 7. DIAGNOSIS (THE FOUR STRUCTURAL EMERGENCIES) */}
-      <section id="diagnosis" className="py-24 px-5 bg-bg3 border-y border-b2/40 relative">
-        <div className="max-w-[1160px] mx-auto">
+      <section id="diagnosis" className="py-14 px-5 bg-bg3 border-y border-b2/40 relative">
+        <motion.div 
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.65, ease: "easeOut" }}
+          className="max-w-[1160px] mx-auto"
+        >
           <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4">
             <span className="w-5.5 h-[1px] bg-teal-accent"></span>
             CLINICAL DIAGNOSIS
@@ -524,30 +579,36 @@ export default function App() {
                 quote: "I did not survive a decade of medical training to spend my days off filming videos for an algorithm that does not pay me."
               }
             ].map((diag, idx) => (
-              <div key={idx} className="bg-bg4/40 border border-b2 hover:border-teal-accent/35 rounded-2xl p-8 lg:p-10 relative flex flex-col justify-between hover:bg-bg4/75 hover:shadow-[0_20px_50px_rgba(0,0,0,0.6),0_0_30px_rgba(13,245,196,0.05)] transition-all duration-300">
-                <div className="font-serif text-[76px] font-extralight text-tg absolute top-5 right-7 leading-none select-none opacity-40">
+              <div key={idx} className="bg-white border border-b2 hover:border-teal-accent/35 rounded-2xl p-8 lg:p-10 relative flex flex-col justify-between hover:bg-bg3/40 hover:shadow-[0_20px_50px_rgba(0,0,0,0.03),0_0_30px_rgba(0,150,136,0.02)] transition-all duration-300">
+                <div className="font-serif text-[76px] font-extralight text-tg absolute top-5 right-7 leading-none select-none opacity-20">
                   {diag.num}
                 </div>
                 <div>
-                  <div className="w-11 h-11 rounded-xl bg-bg1 flex items-center justify-center text-xl mb-6 shadow-inner border border-b1">
+                  <div className="w-11 h-11 rounded-xl bg-bg3 flex items-center justify-center text-xl mb-6 shadow-inner border border-b1">
                     {diag.icon}
                   </div>
                   <h3 className="font-serif text-2xl font-normal text-t1 mb-4">{diag.title}</h3>
                   <p className="text-[14px] text-tm leading-relaxed mb-6 font-light">{diag.desc}</p>
                 </div>
-                <div className="mt-4 p-5 bg-bg5/40 border-l-2 border-l-red-accent rounded-r-xl font-sans text-[13px] italic text-[#8B9BB4] leading-relaxed relative overflow-hidden">
+                <div className="mt-4 p-5 bg-bg5/40 border-l-2 border-l-red-accent rounded-r-xl font-sans text-[13px] italic text-t2/90 leading-relaxed relative overflow-hidden">
                   <div className="absolute top-0 right-0 w-16 h-16 bg-red-accent/5 rounded-full blur-xl pointer-events-none"></div>
                   "{diag.quote}"
                 </div>
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* 8. COST OF INACTION (REAL-TIME LOSS AND BLEED CALCULATION) */}
-      <section id="inaction" className="py-24 px-5 bg-bg2 relative">
-        <div className="max-w-[1160px] mx-auto text-center">
+      <section id="inaction" className="py-14 px-5 bg-bg2 relative">
+        <motion.div 
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.65, ease: "easeOut", delay: 0.05 }}
+          className="max-w-[1160px] mx-auto text-center"
+        >
           <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4 mx-auto justify-center">
             <span className="w-5.5 h-[1px] bg-teal-accent"></span>
             THE COST OF INACTION
@@ -560,7 +621,7 @@ export default function App() {
           </p>
 
           {/* DYNAMIC BLEED COUNT PANEL */}
-          <div className="border border-red-accent/35 bg-red-d/30 rounded-2xl p-6 md:p-10 max-w-[640px] mx-auto mb-14 shadow-[0_15px_40px_rgba(255,62,85,0.08)] text-center relative overflow-hidden group warning-card-glow">
+          <div className="border border-red-accent/35 bg-red-d/30 rounded-2xl p-6 md:p-10 max-w-[640px] mx-auto mb-14 shadow-[0_15px_40px_rgba(225,29,72,0.03)] text-center relative overflow-hidden group warning-card-glow">
             <div className="absolute top-0 left-0 right-0 h-[2px] bg-red-accent/40"></div>
             <div className="font-mono text-xs uppercase tracking-widest text-red-accent mb-4 flex items-center justify-center gap-2">
               <span className="w-2 h-2 rounded-full bg-red-accent animate-ping"></span>
@@ -619,12 +680,18 @@ export default function App() {
               </p>
             </div>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* 9. BEFORE / AFTER STATE TRANSFORMATION */}
-      <section id="transform" className="py-24 px-5 bg-bg3 border-y border-b2/40 relative">
-        <div className="max-w-[1160px] mx-auto">
+      <section id="transform" className="py-14 px-5 bg-bg3 border-y border-b2/40 relative">
+        <motion.div 
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.65, ease: "easeOut" }}
+          className="max-w-[1160px] mx-auto"
+        >
           <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4">
             <span className="w-5.5 h-[1px] bg-teal-accent"></span>
             THE TRANSFORMATION
@@ -635,13 +702,13 @@ export default function App() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Current State */}
-            <div className="bg-bg2 border border-red-accent/15 rounded-xl overflow-hidden shadow-lg flex flex-col justify-between hover:border-red-accent/25 transition-all duration-300">
+            <div className="bg-bg2 border border-red-accent/15 rounded-xl overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.02)] flex flex-col justify-between hover:border-red-accent/25 transition-all duration-300">
               <div className="bg-red-accent/10 text-red-accent border-b border-b2 px-6 py-4 font-mono text-[10px] uppercase tracking-widest font-semibold flex items-center gap-2">
                 <AlertCircle size={14} />
                 CURRENT STATE &middot; THE BURNT CAREGIVER
               </div>
               <div className="p-8 flex-1">
-                <p className="text-[13px] italic text-[#7A8A9E] leading-relaxed mb-6 font-light">
+                <p className="text-[13px] italic text-t2/90 leading-relaxed mb-6 font-light">
                   You entered medicine to heal people and build a great life. The system turned you into an exhausted, underpaid content creator for platforms that do not know your name.
                 </p>
                 <ul className="space-y-4">
@@ -655,7 +722,7 @@ export default function App() {
                     "Missing family time because the content treadmill stops for nothing",
                     "Financial freedom stays something you read about, not something you live"
                   ].map((item, idx) => (
-                    <li key={idx} className="flex gap-3 text-[12px] text-[#7A8A9E] leading-relaxed items-start font-light">
+                    <li key={idx} className="flex gap-3 text-[12px] text-t2/80 leading-relaxed items-start font-light">
                       <XCircle size={14} className="text-red-accent shrink-0 mt-0.5" />
                       <span>{item}</span>
                     </li>
@@ -687,19 +754,25 @@ export default function App() {
                   ].map((item, idx) => (
                     <li key={idx} className="flex gap-3 text-[12px] text-teal-accent leading-relaxed items-start font-light">
                       <CheckCircle2 size={14} className="text-teal-accent shrink-0 mt-0.5" />
-                      <span>{item}</span>
+                      <span className="text-t2/90">{item}</span>
                     </li>
                   ))}
                 </ul>
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* 10. THE DIFFERENCE CARD / TREATMENT INTRO */}
-      <section id="solution" className="py-24 px-5 bg-bg2">
-        <div className="max-w-[1160px] mx-auto">
+      <section id="solution" className="py-14 px-5 bg-bg2">
+        <motion.div 
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.65, ease: "easeOut", delay: 0.05 }}
+          className="max-w-[1160px] mx-auto"
+        >
           <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4">
             <span className="w-5.5 h-[1px] bg-teal-accent"></span>
             THE TREATMENT
@@ -711,7 +784,7 @@ export default function App() {
             Most practitioners have tried the obvious fixes. Local SEO ads. A VA. Basic email lists. None of it works because none of it addresses your specific problem — which is not a marketing problem. It is a compliance architecture problem.
           </p>
 
-          <div className="bg-bg3 border border-teal-accent/15 rounded-2xl p-8 md:p-12 max-w-[800px] mx-auto shadow-[0_0_60px_rgba(0,0,0,0.5),0_0_30px_rgba(13,245,196,0.03)] hover:border-teal-accent/25 transition-all duration-300">
+          <div className="bg-bg3 border border-teal-accent/15 rounded-2xl p-8 md:p-12 max-w-[800px] mx-auto shadow-[0_25px_60px_rgba(0,0,0,0.04),0_0_30px_rgba(0,150,136,0.02)] hover:border-teal-accent/25 transition-all duration-300">
             <div className="font-mono text-[11px] uppercase tracking-widest text-teal-accent mb-4">
               THE DIGITAL ICU DIFFERENCE
             </div>
@@ -735,12 +808,18 @@ export default function App() {
               ))}
             </div>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* 11. TREATMENT PROTOCOLS (THE 8 INTEGRATED SKILLS) */}
-      <section id="skills" className="py-24 px-5 bg-bg3 border-y border-b1">
-        <div className="max-w-[1160px] mx-auto">
+      <section id="skills" className="py-14 px-5 bg-bg3 border-y border-b1">
+        <motion.div 
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.65, ease: "easeOut" }}
+          className="max-w-[1160px] mx-auto"
+        >
           <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4">
             <span className="w-5.5 h-[1px] bg-teal-accent"></span>
             TREATMENT PROTOCOL
@@ -765,7 +844,7 @@ export default function App() {
             ].map((skill, idx) => (
               <div 
                 key={idx} 
-                className="bg-bg4/40 border border-b2 rounded-2xl p-6 hover:border-teal-accent/35 hover:bg-bg4/75 hover:shadow-[0_15px_40px_-15px_rgba(13,245,196,0.06)] hover:-translate-y-1 relative overflow-hidden group transition-all duration-300"
+                className="bg-white border border-b2 rounded-2xl p-6 hover:border-teal-accent/35 hover:bg-bg3/40 hover:shadow-[0_20px_45px_rgba(0,150,136,0.06)] hover:-translate-y-1 relative overflow-hidden group transition-all duration-300"
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-teal-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <div className="font-mono text-[10px] text-teal-accent tracking-widest mb-3 relative z-10">{skill.num}</div>
@@ -774,12 +853,18 @@ export default function App() {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* 12. DYNAMIC INTERACTIVE ROI CALCULATOR */}
-      <section id="calc" className="py-24 px-5 bg-bg2">
-        <div className="max-w-[1160px] mx-auto text-center">
+      <section id="calc" className="py-14 px-5 bg-bg2">
+        <motion.div 
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.65, ease: "easeOut", delay: 0.05 }}
+          className="max-w-[1160px] mx-auto text-center"
+        >
           <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4 mx-auto justify-center">
             <span className="w-5.5 h-[1px] bg-teal-accent"></span>
             YOUR REVENUE DIAGNOSTIC
@@ -793,7 +878,7 @@ export default function App() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-[960px] mx-auto text-left">
             {/* Range Controls */}
-            <div className="bg-bg3 border border-teal-accent/15 rounded-3xl p-8 flex flex-col justify-between shadow-[0_20px_50px_rgba(0,0,0,0.5),0_0_30px_rgba(13,245,196,0.01)] hover:border-teal-accent/25 transition-all duration-300">
+            <div className="bg-bg3 border border-teal-accent/15 rounded-3xl p-8 flex flex-col justify-between shadow-[0_20px_50px_rgba(0,0,0,0.02),0_0_30px_rgba(0,150,136,0.01)] hover:border-teal-accent/25 transition-all duration-300">
               <div className="space-y-6">
                 {/* Control 1: Followers */}
                 <div>
@@ -865,7 +950,7 @@ export default function App() {
             </div>
 
             {/* Simulated Live Outputs */}
-            <div className="bg-bg3 border border-teal-accent/15 rounded-3xl p-8 divide-y divide-b2/25 flex flex-col justify-between shadow-[0_20px_50px_rgba(0,0,0,0.5),0_0_30px_rgba(13,245,196,0.01)] hover:border-teal-accent/25 transition-all duration-300">
+            <div className="bg-bg3 border border-teal-accent/15 rounded-3xl p-8 divide-y divide-b2/25 flex flex-col justify-between shadow-[0_20px_50px_rgba(0,0,0,0.02),0_0_30px_rgba(0,150,136,0.01)] hover:border-teal-accent/25 transition-all duration-300">
               <div className="space-y-4 divide-y divide-b2/20 flex-1">
                 <div className="flex justify-between items-center py-2 text-sm">
                   <span className="font-mono text-[11px] uppercase tracking-wider text-tm">Community Members</span>
@@ -899,11 +984,11 @@ export default function App() {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* 13. TIERING / PACKAGES (WITH COMPLIANCE REASSURANCES) */}
-      <section id="tiers" className="py-24 px-5 bg-bg3 border-y border-b1">
+      <section id="tiers" className="py-14 px-5 bg-bg3 border-y border-b1">
         <div className="max-w-[1160px] mx-auto">
           <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4">
             <span className="w-5.5 h-[1px] bg-teal-accent"></span>
@@ -1061,7 +1146,7 @@ export default function App() {
       </section>
 
       {/* 14. TIMELINE FLOW */}
-      <section id="timeline" className="py-24 px-5 bg-bg2">
+      <section id="timeline" className="py-14 px-5 bg-bg2">
         <div className="max-w-[1160px] mx-auto">
           <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4">
             <span className="w-5.5 h-[1px] bg-teal-accent"></span>
@@ -1097,7 +1182,7 @@ export default function App() {
       </section>
 
       {/* 15. CLINICAL FAQ ACCORDIONS */}
-      <section id="faq" className="py-24 px-5 bg-bg3 border-y border-b2/40">
+      <section id="faq" className="py-14 px-5 bg-bg3 border-y border-b2/40">
         <div className="max-w-[800px] mx-auto">
           <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4 mx-auto justify-center w-full">
             <span className="w-5.5 h-[1px] bg-teal-accent"></span>
@@ -1181,7 +1266,7 @@ export default function App() {
       </section>
 
       {/* 16. CLIENT PERSONAS (ADMISSION PROFILES) */}
-      <section id="personas" className="py-24 px-5 bg-bg2">
+      <section id="personas" className="py-14 px-5 bg-bg2">
         <div className="max-w-[1160px] mx-auto">
           <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4">
             <span className="w-5.5 h-[1px] bg-teal-accent"></span>
@@ -1220,7 +1305,7 @@ export default function App() {
       </section>
 
       {/* 17. FINAL ACTION CTA (BOOK DIAGNOSTIC CALL) */}
-      <section id="cta-final" className="py-28 px-5 bg-bg1 relative overflow-hidden text-center border-t border-b1">
+      <section id="cta-final" className="py-16 px-5 bg-bg1 relative overflow-hidden text-center border-t border-b1">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full bg-gradient-to-br from-teal-accent/10 to-transparent blur-[120px] pointer-events-none"></div>
         
         <div className="max-w-[700px] mx-auto relative z-10">
