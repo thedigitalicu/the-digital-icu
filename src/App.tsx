@@ -85,8 +85,8 @@ export default function App() {
   });
   const [whatsappNumber, setWhatsappNumber] = useState(() => {
     const saved = localStorage.getItem("icu_whatsapp_number");
-    if (!saved || saved === "+1 (555) 019-9000") {
-      return "923213499199";
+    if (!saved || saved === "+1 (555) 019-9000" || saved === "923213499199") {
+      return "+44 7575 846968";
     }
     return saved;
   });
@@ -98,7 +98,6 @@ export default function App() {
   const [isControlPanelOpen, setIsControlPanelOpen] = useState(false);
   const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
   const [isSavedNoticeVisible, setIsSavedNoticeVisible] = useState(false);
-  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
   // Active FAQ accordion state
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
@@ -107,9 +106,6 @@ export default function App() {
   const [followers, setFollowers] = useState(250000);
   const [convRate, setConvRate] = useState(0.04); // in % (e.g. 0.04%)
   const [monthlyPrice, setMonthlyPrice] = useState(99);
-
-  // Live Bleed counter baseline accumulated loss state
-  const [accumulatedLoss, setAccumulatedLoss] = useState(0);
 
   // Nav Scrolled state
   const [isNavScrolled, setIsNavScrolled] = useState(false);
@@ -138,20 +134,6 @@ export default function App() {
 
   // Suggested tier based on follower metrics
   const recommendedTier = followers < 75000 ? 1 : followers < 200000 ? 2 : 3;
-
-  // Real-time ticker for accumulated bleed loss
-  // Daily loss of $462 (default) corresponds to roughly $0.32/minute, which is $0.0053/second.
-  // We calculate this live based on the dynamic dailyRevenueLost from the slider inputs!
-  useEffect(() => {
-    const bleedRatePerMs = dailyRevenueLost / 86400 / 1000;
-    const intervalTime = 50; // update every 50ms for hyper-fluid rendering
-
-    const interval = setInterval(() => {
-      setAccumulatedLoss(prev => prev + (bleedRatePerMs * intervalTime));
-    }, intervalTime);
-
-    return () => clearInterval(interval);
-  }, [dailyRevenueLost]);
 
   // Handle saving the custom links
   const handleSaveLinks = (e: FormEvent) => {
@@ -188,7 +170,7 @@ export default function App() {
           </a>
           
           <div className="hidden md:flex items-center gap-8">
-            <a href="#diagnosis" className="text-tm hover:text-t1 text-[13px] tracking-wide transition-colors">Diagnosis</a>
+            <a href="#vitals" className="text-tm hover:text-t1 text-[13px] tracking-wide transition-colors">Diagnosis</a>
             <a href="#skills" className="text-tm hover:text-t1 text-[13px] tracking-wide transition-colors">Treatment</a>
             <a href="#tiers" className="text-tm hover:text-t1 text-[13px] tracking-wide transition-colors">Tiers</a>
             <a href="#faq" className="text-tm hover:text-t1 text-[13px] tracking-wide transition-colors">FAQ</a>
@@ -263,8 +245,11 @@ export default function App() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="inline-flex items-center gap-2 border border-teal-accent/20 bg-teal-accent/5 rounded-full px-4.5 py-1.5 font-mono text-xs text-teal-accent mb-7 tracking-wider"
         >
-          <span className="text-amb-accent text-[13px] tracking-[2px]">★★★★★</span>
-          <span>TRUSTED BY ELITE MEDICAL PROFESSIONALS WORLDWIDE</span>
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-accent opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-accent"></span>
+          </span>
+          <span>COMPLIANCE-FIRST MONETISATION &middot; LICENSED PRACTITIONERS ONLY</span>
         </motion.div>
 
         <motion.h1 
@@ -273,11 +258,8 @@ export default function App() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="font-serif text-[clamp(44px,6vw,88px)] font-light text-t1 leading-[1.05] tracking-tight max-w-[1000px] mb-8"
         >
-          You have half a million followers.<br />
-          Your digital revenue has <em className="not-italic text-red-accent font-semibold italic relative inline-block">
-            flatlined.
-            <span className="absolute bottom-1 left-0 right-0 h-[2px] bg-red-accent/40 animate-pulse"></span>
-          </em>
+          We help elite medical professionals turn global<br />
+          audiences into monthly <em className="not-italic text-teal-accent font-semibold italic">recurring revenue.</em>
         </motion.h1>
 
         <motion.div 
@@ -286,11 +268,8 @@ export default function App() {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="font-sans text-[clamp(15px,2vw,18px)] font-light text-tm max-w-[620px] leading-relaxed mb-10"
         >
-          <p className="mb-4">
-            You create content that reaches millions. You carry the full legal risk of a licensed practitioner. And yet every viral video ends the same way — overflowing DMs, a dead-end booking link, and a bank account that has not moved a single dollar from the audience you spent years building.
-          </p>
           <p>
-            The Digital ICU builds the compliance-first, automated architecture that permanently ends that gap — without adding a single hour to your clinical schedule.
+            A done-for-you architecture that closes the gap between audience and income — without adding a single clinical hour to your week.
           </p>
         </motion.div>
 
@@ -309,7 +288,7 @@ export default function App() {
           
           <div className="absolute top-5 right-5 bg-black/80 border border-teal-accent/20 rounded px-2.5 py-1.5 font-mono text-[9px] uppercase tracking-wider text-teal-accent z-10 flex items-center gap-1.5">
             <HeartPulse size={11} className="text-teal-accent animate-pulse" />
-            0rtber0y75 SECURED
+            4-MIN DIAGNOSIS &middot; WATCH BEFORE YOUR CALL
           </div>
 
           <div className="w-full rounded-xl overflow-hidden aspect-video bg-[#030509] border border-b1 relative">
@@ -362,322 +341,93 @@ export default function App() {
         </motion.div>
       </section>
 
-      {/* 4. TRUST STRIP */}
-      <section id="trust" className="bg-bg3 border-t border-b border-b1 py-8 px-5">
-        <div className="max-w-[1160px] mx-auto flex flex-col items-center gap-4.5">
-          <div className="font-mono text-[10px] tracking-widest text-tg uppercase">
-            PRACTITIONERS ADMITTED FROM INSTITUTIONS INCLUDING
-          </div>
-          <div className="flex items-center justify-center flex-wrap gap-y-3.5 gap-x-8 text-center">
-            <span className="font-sans text-[14px] font-medium text-tm/50 hover:text-t1 transition-colors">Mayo Clinic</span>
-            <span className="hidden sm:inline w-[1px] h-4 bg-neutral-200"></span>
-            <span className="font-sans text-[14px] font-medium text-tm/50 hover:text-t1 transition-colors">Cleveland Clinic</span>
-            <span className="hidden sm:inline w-[1px] h-4 bg-neutral-200"></span>
-            <span className="font-sans text-[14px] font-medium text-tm/50 hover:text-t1 transition-colors">Johns Hopkins</span>
-            <span className="hidden sm:inline w-[1px] h-4 bg-neutral-200"></span>
-            <span className="font-sans text-[14px] font-medium text-tm/50 hover:text-t1 transition-colors">Stanford Medicine</span>
-            <span className="hidden sm:inline w-[1px] h-4 bg-neutral-200"></span>
-            <span className="font-sans text-[14px] font-medium text-tm/50 hover:text-t1 transition-colors">Harvard Medical School</span>
-          </div>
+      {/* 4. TRUST STRIP — honest capacity facts, not fabricated ratings */}
+      <section id="trust" className="bg-bg3 border-t border-b border-b1 py-10 px-5">
+        <div className="max-w-[1160px] mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8 divide-x divide-b2/20">
+          {[
+            { value: 21, suffix: "", prefix: "", label: "days", desc: "to your first qualified diagnostic call" },
+            { value: 4, suffix: "", prefix: "", label: "practices", desc: "admitted per quarter, by design" },
+            { value: 1, suffix: "", prefix: "", label: "founder", desc: "building every account personally" },
+            { value: 0, suffix: " hrs", prefix: "", label: "", desc: "added to your clinical week" },
+          ].map((stat, idx) => (
+            <div key={idx} className={`text-center px-2 ${idx > 0 ? "pl-6" : ""}`}>
+              <div className="font-serif text-[36px] font-semibold text-teal-accent leading-none mb-1.5">
+                <AnimatedCounter value={stat.value} prefix={stat.prefix} suffix={stat.suffix} />
+                {stat.label && <span className="text-[16px] font-sans font-medium text-t1 ml-1.5">{stat.label}</span>}
+              </div>
+              <p className="font-sans text-[12px] text-tm leading-snug font-light">{stat.desc}</p>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* 5. VITAL SIGNS (MONITORED REAL-TIME VALUES) */}
-      <section id="vitals" className="bg-bg3 border-b border-b2/40 relative">
+      {/* 5. PATIENT INTAKE REPORT (EHR-STYLE VITALS + CHART NOTE) */}
+      <section id="vitals" className="py-14 px-5 bg-bg2 border-b border-b2/40 relative">
         <motion.div 
           initial={{ opacity: 0, y: 35 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.65, ease: "easeOut" }}
-          className="max-w-[1160px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 lg:divide-x divide-b2/30"
-        >
-          {/* Card 1 */}
-          <div className="p-10 flex flex-col justify-between group hover:bg-bg5/20 transition-all duration-300">
-            <div>
-              <div className="font-mono text-[10px] uppercase tracking-widest text-tm mb-2.5 flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-accent animate-pulse"></span>
-                Traffic Loss Rate
-              </div>
-              <div className="font-serif text-[56px] font-semibold text-red-accent leading-none mb-3">
-                <AnimatedCounter value={95} suffix="%" />
-              </div>
-            </div>
-            <p className="font-sans text-[13px] text-tm leading-relaxed font-light">
-              Of your global followers hit a dead-end clinic booking link and disappear. Every single day you post without a capture system.
-            </p>
-          </div>
-
-          {/* Card 2 */}
-          <div className="p-10 flex flex-col justify-between group hover:bg-bg5/20 transition-all duration-300">
-            <div>
-              <div className="font-mono text-[10px] uppercase tracking-widest text-tm mb-2.5 flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-amb-accent animate-pulse"></span>
-                Current Digital Income
-              </div>
-              <div className="font-serif text-[56px] font-semibold text-amb-accent leading-none mb-3">
-                $0
-              </div>
-            </div>
-            <p className="font-sans text-[13px] text-tm leading-relaxed font-light">
-              Despite millions of monthly content views and a global audience actively searching for your expertise. Structurally zero.
-            </p>
-          </div>
-
-          {/* Card 3 */}
-          <div className="p-10 flex flex-col justify-between group hover:bg-bg5/20 transition-all duration-300">
-            <div>
-              <div className="font-mono text-[10px] uppercase tracking-widest text-tm mb-2.5 flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-teal-accent"></span>
-                Daily Patient Ceiling
-              </div>
-              <div className="font-serif text-[56px] font-semibold text-t1 leading-none mb-3">
-                <AnimatedCounter value={20} />
-              </div>
-            </div>
-            <p className="font-sans text-[13px] text-tm leading-relaxed font-light">
-              The hard biological ceiling of a linear income model. Fame does not move this number. Only a parallel digital architecture does.
-            </p>
-          </div>
-
-          {/* Card 4 */}
-          <div className="p-10 flex flex-col justify-between group hover:bg-bg5/20 transition-all duration-300 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-teal-accent/5 rounded-full blur-2xl pointer-events-none"></div>
-            <div>
-              <div className="font-mono text-[10px] uppercase tracking-widest text-tm mb-2.5 flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-teal-accent animate-ping"></span>
-                90-Day MRR Target
-              </div>
-              <div className="font-serif text-[56px] font-semibold text-teal-accent leading-none mb-3">
-                <AnimatedCounter value={9900} prefix="$" locale={true} />
-              </div>
-            </div>
-            <p className="font-sans text-[13px] text-tm leading-relaxed font-light">
-              From just 100 community members at $99/month. Zero new clinical hours. Zero new patients. Zero new content required.
-            </p>
-          </div>
-        </motion.div>
-      </section>
-
-      {/* 6. MIRROR (INTAKE NARRATIVE & METRICS) */}
-      <section id="mirror" className="py-14 px-5 bg-bg2 relative">
-        <motion.div 
-          initial={{ opacity: 0, y: 35 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.65, ease: "easeOut", delay: 0.1 }}
           className="max-w-[1160px] mx-auto"
         >
-          <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4">
-            <span className="w-5.5 h-[1px] bg-teal-accent"></span>
+          <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4 kicker-glow">
+            <span className="w-5.5 h-[1px] bg-teal-accent dash-glow"></span>
             PATIENT INTAKE REPORT
           </div>
-          <h2 className="font-serif text-[clamp(34px,4.5vw,56px)] font-medium text-t1 leading-none mb-12">
+          <h2 className="font-serif text-[clamp(34px,4.5vw,56px)] font-medium text-t1 leading-none mb-10">
             We already know <em className="text-teal-accent not-italic font-normal italic">exactly where you are.</em>
           </h2>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            {/* Written Narrative Case */}
-            <div className="bg-bg3/80 border border-teal-accent/20 border-l-4 border-l-teal-accent rounded-xl p-8 lg:p-10 shadow-[0_15px_40px_rgba(0,0,0,0.03)] hover:border-teal-accent/35 transition-all duration-300">
-              <div className="font-mono text-[9px] uppercase tracking-widest text-tg mb-4">
-                06:30 &middot; TUESDAY MORNING &middot; PATIENT INTAKE
-              </div>
-              <div className="space-y-4 text-sm leading-relaxed text-t2/90 font-light">
-                <p>
-                  You wake up and check your phone. <strong className="text-t1 font-normal">The video you posted three days ago has hit 2.1 million views.</strong> For a moment, there is that familiar surge.
-                </p>
-                <p>Then you open your bank notifications. Nothing has changed.</p>
-                <p>
-                  You scroll your DMs. <strong className="text-t1 font-normal">There are 847 of them.</strong> A woman in Manchester asking about her thyroid. A man in Vancouver asking about testosterone protocols. A mother in Dubai asking about her daughter's gut symptoms. All of them desperate. All of them genuinely helped by your content. All of them unreachable — because your licence does not cross state lines, let alone oceans.
-                </p>
-                <p>
-                  You close the app. Drive to the clinic. See nineteen patients. Drive home exhausted. Try to be present with your family. <strong className="text-t1 font-normal">Open your phone and begin planning the next video.</strong>
-                </p>
-                <p>Another day. Another two million impressions. Another zero from your digital audience.</p>
-              </div>
-            </div>
-
-            {/* Severity Stack list */}
-            <div>
-              <div className="font-mono text-[9px] uppercase tracking-widest text-tg mb-4">
-                ACTIVE SYMPTOMS &middot; SEVERITY INDEX
-              </div>
-              <div className="flex flex-col gap-3.5">
-                {[
-                  { label: "Unmonetised global traffic", desc: "95% of followers generate zero revenue while platforms collect all ad income", severity: "CRITICAL", level: "crit" },
-                  { label: "Geographic income ceiling", desc: "Licensing laws lock every dollar of digital demand to one zip code", severity: "CRITICAL", level: "crit" },
-                  { label: "Liability exposure", desc: "Unarchitectured DMs represent a medical board risk every single day", severity: "CRITICAL", level: "crit" },
-                  { label: "Operational burnout", desc: "Two full-time jobs generating the income of one", severity: "HIGH", level: "high" },
-                  { label: "Audience depreciation", desc: "Every follower rented from Big Tech with zero ownership guarantee", severity: "HIGH", level: "high" },
-                ].map((item, idx) => (
-                  <div key={idx} className="bg-bg3 border border-b2 rounded-xl p-5 flex items-center justify-between gap-4 hover:border-teal-accent/20 hover:bg-bg3/60 transition-all duration-300">
-                    <div className="text-[13px] leading-normal text-tm">
-                      <strong className="text-t2 font-medium block sm:inline mr-1">{item.label}</strong> — {item.desc}
-                    </div>
-                    <span className={`font-mono text-[9px] uppercase tracking-wider px-2.5 py-1 rounded-lg border whitespace-nowrap ${
-                      item.level === "crit" 
-                        ? "bg-red-d text-red-accent border-red-b/40 animate-pulse" 
-                        : "bg-amb-d text-amb-accent border-amb-accent/20"
-                    }`}>
-                      {item.severity}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </section>
-
-      {/* 7. DIAGNOSIS (THE FOUR STRUCTURAL EMERGENCIES) */}
-      <section id="diagnosis" className="py-14 px-5 bg-bg3 border-y border-b2/40 relative">
-        <motion.div 
-          initial={{ opacity: 0, y: 35 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.65, ease: "easeOut" }}
-          className="max-w-[1160px] mx-auto"
-        >
-          <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4">
-            <span className="w-5.5 h-[1px] bg-teal-accent"></span>
-            CLINICAL DIAGNOSIS
-          </div>
-          <h2 className="font-serif text-[clamp(34px,4.5vw,56px)] font-medium text-t1 leading-none mb-5 max-w-[700px]">
-            Four structural <span className="text-red-accent not-italic italic">emergencies</span> draining your revenue every day.
-          </h2>
-          <p className="font-sans text-lg font-light text-tm max-w-[600px] leading-relaxed mb-16">
-            None of these failures are your fault. The system was not built for someone with your combination of clinical authority and global digital reach. But they are your problem.
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Compact vitals row */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
             {[
-              { 
-                num: "01", 
-                icon: "🩺", 
-                title: "The Leaky Bucket", 
-                desc: "Every time you post a video, you fill a bucket with the most valuable resource on the internet — qualified, intent-driven trust from an audience that chose to follow a medical professional. Then the bucket hits a dead-end link and every drop falls through the holes. The traffic was real. The demand was real. The revenue was invisible.",
-                quote: "My last video hit 5 million views. I had 1,200 DMs in 48 hours. My bank account did not move a single dollar."
-              },
-              { 
-                num: "02", 
-                icon: "⚖️", 
-                title: "The Geographic Prison", 
-                desc: "Your medical licence is one of the most powerful professional credentials that exists. It is also, in digital terms, a prison. State licensing laws mean your clinical income cannot legally cross state lines — let alone oceans. Your content reaches forty countries. Your revenue is imprisoned in the same zip code as your parking space.",
-                quote: "If only my followers in London and Sydney could legally pay me for the protocols I use in my clinic every day."
-              },
-              { 
-                num: "03", 
-                icon: "⚠️", 
-                title: "The Liability Minefield", 
-                desc: "Your DMs are not a community. They are an unmonitored, compliance-free zone where your medical licence is exposed to attack every hour. Every follower asking about symptoms. Every response — however careful — is a potential HIPAA violation. One wrong reply by a VA you trusted and you are facing a medical board investigation.",
-                quote: "A VA sent a clinically specific response to a follower. Completely innocent in intent. I almost lost my licence over a $10/hr decision."
-              },
-              { 
-                num: "04", 
-                icon: "🔥", 
-                title: "The Burnout Spiral", 
-                desc: "You are working 60 clinical hours per week while simultaneously running an unpaid second full-time job creating content for platforms that collect all advertising revenue while you do all the intellectual labour. Your income is still 100% linear. Nothing compounds. Nothing builds while you sleep. The machine was designed to keep you running.",
-                quote: "I did not survive a decade of medical training to spend my days off filming videos for an algorithm that does not pay me."
-              }
-            ].map((diag, idx) => (
-              <div key={idx} className="bg-white border border-b2 hover:border-teal-accent/35 rounded-2xl p-8 lg:p-10 relative flex flex-col justify-between hover:bg-bg3/40 hover:shadow-[0_20px_50px_rgba(0,0,0,0.03),0_0_30px_rgba(0,150,136,0.02)] transition-all duration-300">
-                <div className="font-serif text-[76px] font-extralight text-tg absolute top-5 right-7 leading-none select-none opacity-20">
-                  {diag.num}
-                </div>
-                <div>
-                  <div className="w-11 h-11 rounded-xl bg-bg3 flex items-center justify-center text-xl mb-6 shadow-inner border border-b1">
-                    {diag.icon}
-                  </div>
-                  <h3 className="font-serif text-2xl font-normal text-t1 mb-4">{diag.title}</h3>
-                  <p className="text-[14px] text-tm leading-relaxed mb-6 font-light">{diag.desc}</p>
-                </div>
-                <div className="mt-4 p-5 bg-bg5/40 border-l-2 border-l-red-accent rounded-r-xl font-sans text-[13px] italic text-t2/90 leading-relaxed relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-16 h-16 bg-red-accent/5 rounded-full blur-xl pointer-events-none"></div>
-                  "{diag.quote}"
-                </div>
+              { value: 95, suffix: "%", color: "text-red-accent", label: "TRAFFIC LOSS RATE" },
+              { value: 0, prefix: "$", suffix: "", color: "text-amb-accent", label: "DIGITAL INCOME" },
+              { value: 20, suffix: "/day", color: "text-t1", label: "PATIENT CEILING" },
+              { value: 9900, prefix: "$", suffix: "", locale: true, color: "text-teal-accent", label: "90-DAY MRR TARGET" },
+            ].map((v, idx) => (
+              <div key={idx} className="border-t-2 border-teal-accent/25 pt-3">
+                <p className="font-mono text-[9px] text-tm tracking-wider mb-1.5">{v.label}</p>
+                <p className={`font-mono text-[22px] font-semibold ${v.color}`}>
+                  <AnimatedCounter value={v.value} prefix={v.prefix || ""} suffix={v.suffix || ""} locale={v.locale} />
+                </p>
               </div>
             ))}
           </div>
-        </motion.div>
-      </section>
 
-      {/* 8. COST OF INACTION (REAL-TIME LOSS AND BLEED CALCULATION) */}
-      <section id="inaction" className="py-14 px-5 bg-bg2 relative">
-        <motion.div 
-          initial={{ opacity: 0, y: 35 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.65, ease: "easeOut", delay: 0.05 }}
-          className="max-w-[1160px] mx-auto text-center"
-        >
-          <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4 mx-auto justify-center">
-            <span className="w-5.5 h-[1px] bg-teal-accent"></span>
-            THE COST OF INACTION
-          </div>
-          <h2 className="font-serif text-[clamp(34px,4.5vw,56px)] font-medium text-t1 leading-none mb-5 max-w-[700px] mx-auto">
-            Every day you wait, the damage <span className="text-red-accent not-italic font-semibold">compounds.</span>
-          </h2>
-          <p className="font-sans text-lg font-light text-tm max-w-[600px] leading-relaxed mb-12 mx-auto">
-            This is not a business problem that holds still while you consider your options. It gets measurably worse every day. Here is the conservative arithmetic.
-          </p>
-
-          {/* DYNAMIC BLEED COUNT PANEL */}
-          <div className="border border-red-accent/35 bg-red-d/30 rounded-2xl p-6 md:p-10 max-w-[640px] mx-auto mb-14 shadow-[0_15px_40px_rgba(225,29,72,0.03)] text-center relative overflow-hidden group warning-card-glow">
-            <div className="absolute top-0 left-0 right-0 h-[2px] bg-red-accent/40"></div>
-            <div className="font-mono text-xs uppercase tracking-widest text-red-accent mb-4 flex items-center justify-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-red-accent animate-ping"></span>
-              REVENUE LOST SINCE YOU OPENED THIS PAGE
-            </div>
-            
-            <div className="font-mono text-[42px] md:text-[54px] font-bold text-red-accent leading-none mb-3">
-              ${accumulatedLoss.toFixed(2)}
-            </div>
-
-            <div className="font-mono text-[10px] uppercase tracking-wider text-tm">
-              ${(dailyRevenueLost / 1440).toFixed(2)}/minute &middot; Running Live &middot; ${dailyRevenueLost.toLocaleString()}/day baseline loss
+          {/* EHR-formatted chart note */}
+          <div className="bg-bg3 border border-b2 rounded-2xl p-8 md:p-10 mb-10 font-mono">
+            <div className="grid grid-cols-1 md:grid-cols-[150px_1fr] gap-y-4 gap-x-5 text-[12.5px]">
+              <span className="text-tg uppercase tracking-wider text-[10px] pt-0.5">Chief Complaint</span>
+              <span className="text-t1">&ldquo;Millions of views. Zero digital revenue.&rdquo;</span>
+              <span className="text-tg uppercase tracking-wider text-[10px] pt-0.5">HPI</span>
+              <span className="text-t2 leading-relaxed font-sans">2.1M views on the last post. 847 unread DMs — a woman in Manchester, a man in Vancouver, a mother in Dubai, all genuinely helped by the content, none of them reachable, because the licence does not cross state lines. Bank balance unchanged in 90 days.</span>
+              <span className="text-tg uppercase tracking-wider text-[10px] pt-0.5">Assessment</span>
+              <span className="text-t2 leading-relaxed font-sans">Unmonetised audience with active, unmet demand across multiple regions.</span>
+              <span className="text-tg uppercase tracking-wider text-[10px] pt-0.5">Plan</span>
+              <span className="text-teal-accent font-sans">Proceed to treatment — see below.</span>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left max-w-[1000px] mx-auto">
-            <div className="bg-bg3 border border-b2 hover:border-red-accent/25 rounded-xl p-8 flex flex-col justify-between transition-all duration-300">
-              <div>
-                <div className="font-mono text-[28px] font-bold text-red-accent mb-2">
-                  ${dailyRevenueLost.toLocaleString()}
+          {/* Active symptoms severity table */}
+          <div>
+            <div className="font-mono text-[10px] tracking-wider text-tg uppercase mb-4">Active Symptoms &middot; Severity Index</div>
+            <div className="border border-b2 rounded-xl overflow-hidden divide-y divide-b2/30">
+              {[
+                { label: "Unmonetised global traffic", severity: "CRITICAL", level: "crit" },
+                { label: "Geographic income ceiling", severity: "CRITICAL", level: "crit" },
+                { label: "Liability exposure", severity: "CRITICAL", level: "crit" },
+                { label: "Operational burnout", severity: "HIGH", level: "high" },
+              ].map((item, idx) => (
+                <div key={idx} className="flex items-center justify-between px-6 py-3.5 text-[13px]">
+                  <span className="text-t2">{item.label}</span>
+                  <span className={`font-mono text-[10px] uppercase tracking-wider px-2.5 py-1 rounded-lg whitespace-nowrap ${
+                    item.level === "crit" ? "bg-red-d text-red-accent" : "bg-amb-d text-amb-accent"
+                  }`}>
+                    {item.severity}
+                  </span>
                 </div>
-                <div className="font-serif text-[17px] text-t1 font-medium mb-3">
-                  Lost every day the system is missing
-                </div>
-              </div>
-              <p className="text-[13px] text-tm leading-relaxed mt-2 font-light">
-                Based on your follower count of {followers.toLocaleString()} with a conservative {convRate}% conversion rate — well below the 0.1–0.5% industry standard for medical professionals.
-              </p>
-            </div>
-
-            <div className="bg-bg3 border border-b2 hover:border-amb-accent/25 rounded-xl p-8 flex flex-col justify-between transition-all duration-300">
-              <div>
-                <div className="font-mono text-[28px] font-bold text-amb-accent mb-2">
-                  Zero
-                </div>
-                <div className="font-serif text-[17px] text-t1 font-medium mb-3">
-                  Audience Ownership Guarantee
-                </div>
-              </div>
-              <p className="text-[13px] text-tm leading-relaxed mt-2 font-light">
-                Every follower you have built is rented from Big Tech — not owned by you. One algorithm swing, shadowban, or policy modification and your audience can disappear in 48 hours.
-              </p>
-            </div>
-
-            <div className="bg-bg3 border border-b2 hover:border-teal-accent/25 rounded-xl p-8 flex flex-col justify-between transition-all duration-300">
-              <div>
-                <div className="font-mono text-[28px] font-bold text-t1 mb-2">
-                  5 Days
-                </div>
-                <div className="font-serif text-[17px] text-t1 font-medium mb-3">
-                  Clinic Hours Ceiling Permanent
-                </div>
-              </div>
-              <p className="text-[13px] text-tm leading-relaxed mt-2 font-light">
-                If nothing changes structurally, trading clinical hours for cash remains the permanent blueprint of your life. The path to leverage requires exactly one compliance-first change.
-              </p>
+              ))}
             </div>
           </div>
         </motion.div>
@@ -692,8 +442,8 @@ export default function App() {
           transition={{ duration: 0.65, ease: "easeOut" }}
           className="max-w-[1160px] mx-auto"
         >
-          <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4">
-            <span className="w-5.5 h-[1px] bg-teal-accent"></span>
+          <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4 kicker-glow">
+            <span className="w-5.5 h-[1px] bg-teal-accent dash-glow"></span>
             THE TRANSFORMATION
           </div>
           <h2 className="font-serif text-[clamp(34px,4.5vw,56px)] font-medium text-t1 leading-none mb-12">
@@ -761,6 +511,36 @@ export default function App() {
               </div>
             </div>
           </div>
+
+          {/* Illustrative growth visual — honest model, not a stock photo or promise */}
+          <div className="mt-8 bg-bg2 border border-teal-accent/15 rounded-2xl p-8 md:p-10">
+            <div className="flex flex-col md:flex-row gap-8 md:items-end">
+              <div className="flex gap-8 shrink-0">
+                <div>
+                  <p className="font-mono text-[10px] text-tm uppercase tracking-wider mb-1.5">Illustrative model, month 6</p>
+                  <p className="font-serif text-[32px] font-semibold text-t1 leading-none"><AnimatedCounter value={60} /> members</p>
+                </div>
+                <div>
+                  <p className="font-mono text-[10px] text-tm uppercase tracking-wider mb-1.5">At $99/month</p>
+                  <p className="font-serif text-[32px] font-semibold text-teal-accent leading-none">$<AnimatedCounter value={5940} locale={true} /></p>
+                </div>
+              </div>
+              <div className="flex-1 flex items-end gap-2.5 h-[90px]">
+                {[5, 14, 26, 38, 50, 60].map((v, idx) => (
+                  <div key={idx} className="flex-1 flex flex-col items-center justify-end h-full">
+                    <div
+                      className="w-full bg-teal-accent/70 rounded-t-md transition-all duration-700"
+                      style={{ height: `${(v / 60) * 100}%` }}
+                    ></div>
+                    <span className="font-mono text-[8px] text-tg mt-1.5">M{idx + 1}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <p className="font-mono text-[10px] text-tg mt-6 leading-relaxed">
+              Illustrative planning model, not a projection or guarantee. Actual results depend on your audience, niche, and execution.
+            </p>
+          </div>
         </motion.div>
       </section>
 
@@ -773,8 +553,8 @@ export default function App() {
           transition={{ duration: 0.65, ease: "easeOut", delay: 0.05 }}
           className="max-w-[1160px] mx-auto"
         >
-          <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4">
-            <span className="w-5.5 h-[1px] bg-teal-accent"></span>
+          <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4 kicker-glow">
+            <span className="w-5.5 h-[1px] bg-teal-accent dash-glow"></span>
             THE TREATMENT
           </div>
           <h2 className="font-serif text-[clamp(34px,4.5vw,56px)] font-medium text-t1 leading-none mb-6">
@@ -789,7 +569,7 @@ export default function App() {
               THE DIGITAL ICU DIFFERENCE
             </div>
             <p className="font-serif text-[24px] md:text-[28px] font-medium text-t1 leading-normal mb-8">
-              "Other agencies promise to get you more followers. We build the automated architecture that extracts $60,000 a year from the followers you already have — without you lifting a finger."
+              "Other agencies promise to get you more followers. We build the automated, compliance-first architecture designed to turn the followers you already have into recurring revenue — without adding hours to your clinical week."
             </p>
 
             <div className="divide-y divide-b2/20">
@@ -820,36 +600,51 @@ export default function App() {
           transition={{ duration: 0.65, ease: "easeOut" }}
           className="max-w-[1160px] mx-auto"
         >
-          <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4">
-            <span className="w-5.5 h-[1px] bg-teal-accent"></span>
+          <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4 kicker-glow">
+            <span className="w-5.5 h-[1px] bg-teal-accent dash-glow"></span>
             TREATMENT PROTOCOL
           </div>
           <h2 className="font-serif text-[clamp(34px,4.5vw,56px)] font-medium text-t1 leading-none mb-6">
             The 8-Skill System.<br /><em className="text-teal-accent not-italic">Built to stop the bleed.</em>
           </h2>
-          <p className="font-sans text-lg font-light text-tm max-w-[600px] leading-relaxed mb-16">
-            This is not a collection of tools. It is a single integrated infrastructure where every component connects to the next. Remove one piece and the system breaks. Together, they form the only compliance-first digital monetisation architecture designed for licensed medical professionals.
+          <p className="font-sans text-lg font-light text-tm max-w-[600px] leading-relaxed mb-14">
+            One integrated infrastructure across four phases. Remove a piece and the system breaks.
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="flex flex-col gap-8">
             {[
-              { num: "SKILL 01", title: "Traffic Trapdoor", desc: "A precision lead magnet pulling followers off rented platforms onto a private email list you own permanently. Target: 500+ qualified out-of-state leads in 30 days." },
-              { num: "SKILL 02", title: "Behavioural Email Flows", desc: "Seven automated trust-building sequences that deliver clinical authority and convert cold followers into paying community members — 24 hours a day, zero input from you." },
-              { num: "SKILL 03", title: "Newsletter-as-a-Service", desc: "You record one 10-minute voice note. Our AI captures your exact clinical voice and publishes a polished weekly newsletter. Zero writing. Zero editing. Zero time." },
-              { num: "SKILL 04", title: "Borderless Skool Campus", desc: "A gated, paid global health education community legally structured as general educational content — bypassing state licensing restrictions. Every member pays $99/month." },
-              { num: "SKILL 05", title: "Compliance-First Legal Gates", desc: "Legally vetted, HIPAA-safe educational disclaimers and waivers installed before any member enters. Transforms you from a liable practitioner into a globally protected health educator." },
-              { num: "SKILL 06", title: "AI Support Chatbot", desc: "A custom AI assistant trained on your protocols, philosophy, and voice. Handles every routine member question around the clock. You never manually reply to an out-of-state message again." },
-              { num: "SKILL 07", title: "AI Hook Engineering", desc: "AI analyses your highest-performing content and engineers optimised hooks for future videos. Your existing filming schedule produces compounding top-of-funnel traffic automatically." },
-              { num: "SKILL 08", title: "High-Ticket Backend", desc: "A $5,000–$10,000 consulting or masterclass programme converting your top 5% of community members into high-margin private clients — with a VSL and application funnel doing all the selling." }
-            ].map((skill, idx) => (
-              <div 
-                key={idx} 
-                className="bg-white border border-b2 rounded-2xl p-6 hover:border-teal-accent/35 hover:bg-bg3/40 hover:shadow-[0_20px_45px_rgba(0,150,136,0.06)] hover:-translate-y-1 relative overflow-hidden group transition-all duration-300"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-teal-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <div className="font-mono text-[10px] text-teal-accent tracking-widest mb-3 relative z-10">{skill.num}</div>
-                <h3 className="font-serif text-[19px] font-semibold text-t1 mb-2 relative z-10">{skill.title}</h3>
-                <p className="text-[12.5px] text-tm leading-relaxed relative z-10 font-light">{skill.desc}</p>
+              { phase: "PHASE 1 — CAPTURE", items: [
+                { num: "SKILL 01", title: "Traffic Trapdoor", desc: "A precision lead magnet pulling followers off rented platforms onto a private email list you own permanently." },
+                { num: "SKILL 02", title: "Behavioural Email Flows", desc: "Automated trust-building sequences that convert cold followers into paying community members, around the clock." },
+              ]},
+              { phase: "PHASE 2 — CONVERT", items: [
+                { num: "SKILL 03", title: "Newsletter-as-a-Service", desc: "One 10-minute voice note becomes a polished weekly newsletter in your exact clinical voice." },
+                { num: "SKILL 04", title: "Borderless Skool Campus", desc: "A gated, paid global health education community, legally structured within general-education boundaries." },
+              ]},
+              { phase: "PHASE 3 — PROTECT", items: [
+                { num: "SKILL 05", title: "Compliance-First Legal Gates", desc: "Legally vetted, HIPAA-safe disclaimers and waivers installed before any member ever enters." },
+                { num: "SKILL 06", title: "AI Support Chatbot", desc: "Trained on your protocols and voice, handling every routine member question around the clock." },
+              ]},
+              { phase: "PHASE 4 — SCALE", items: [
+                { num: "SKILL 07", title: "AI Hook Engineering", desc: "Analyses your highest-performing content and engineers hooks for future videos automatically." },
+                { num: "SKILL 08", title: "High-Ticket Backend", desc: "Converts your top 5% of community members into high-margin private clients via VSL and application funnel." },
+              ]},
+            ].map((group, gIdx) => (
+              <div key={gIdx}>
+                <p className="font-mono text-[10px] tracking-wider text-teal-accent uppercase mb-3 pb-2 border-b border-teal-accent/25">{group.phase}</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {group.items.map((skill, idx) => (
+                    <div 
+                      key={idx} 
+                      className="bg-white border border-b2 rounded-2xl p-6 hover:border-teal-accent/35 hover:bg-bg3/40 hover:shadow-[0_20px_45px_rgba(0,150,136,0.06)] hover:-translate-y-1 relative overflow-hidden group transition-all duration-300"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-br from-teal-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                      <div className="font-mono text-[10px] text-teal-accent tracking-widest mb-3 relative z-10">{skill.num}</div>
+                      <h3 className="font-serif text-[19px] font-semibold text-t1 mb-2 relative z-10">{skill.title}</h3>
+                      <p className="text-[12.5px] text-tm leading-relaxed relative z-10 font-light">{skill.desc}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
@@ -865,8 +660,8 @@ export default function App() {
           transition={{ duration: 0.65, ease: "easeOut", delay: 0.05 }}
           className="max-w-[1160px] mx-auto text-center"
         >
-          <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4 mx-auto justify-center">
-            <span className="w-5.5 h-[1px] bg-teal-accent"></span>
+          <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4 mx-auto justify-center kicker-glow">
+            <span className="w-5.5 h-[1px] bg-teal-accent dash-glow"></span>
             YOUR REVENUE DIAGNOSTIC
           </div>
           <h2 className="font-serif text-[clamp(34px,4.5vw,56px)] font-medium text-t1 leading-none mb-5 max-w-[700px] mx-auto">
@@ -982,6 +777,9 @@ export default function App() {
                 <span>BREAK-EVEN TARGET</span>
                 <span className="text-t1 font-medium">{breakEvenMembers} MEMBERS (${(breakEvenMembers * monthlyPrice).toLocaleString()}/mo MRR)</span>
               </div>
+              <div className="pt-3 font-mono text-[9px] text-tg leading-relaxed">
+                All figures are illustrative projections based on your inputs — not promises or guarantees of earnings.
+              </div>
             </div>
           </div>
         </motion.div>
@@ -990,8 +788,8 @@ export default function App() {
       {/* 13. TIERING / PACKAGES (WITH COMPLIANCE REASSURANCES) */}
       <section id="tiers" className="py-14 px-5 bg-bg3 border-y border-b1">
         <div className="max-w-[1160px] mx-auto">
-          <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4">
-            <span className="w-5.5 h-[1px] bg-teal-accent"></span>
+          <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4 kicker-glow">
+            <span className="w-5.5 h-[1px] bg-teal-accent dash-glow"></span>
             TREATMENT PLANS
           </div>
           <h2 className="font-serif text-[clamp(34px,4.5vw,56px)] font-medium text-t1 leading-none mb-6">
@@ -1142,21 +940,24 @@ export default function App() {
               </div>
             </div>
           </div>
+          <p className="font-mono text-[10px] text-tg mt-10 text-center max-w-[720px] mx-auto leading-relaxed">
+            Guarantees are service-level commitments defined in writing before engagement. Revenue figures shown are illustrative targets, not promises of earnings.
+          </p>
         </div>
       </section>
 
       {/* 14. TIMELINE FLOW */}
       <section id="timeline" className="py-14 px-5 bg-bg2">
         <div className="max-w-[1160px] mx-auto">
-          <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4">
-            <span className="w-5.5 h-[1px] bg-teal-accent"></span>
+          <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4 kicker-glow">
+            <span className="w-5.5 h-[1px] bg-teal-accent dash-glow"></span>
             RECOVERY TIMELINE
           </div>
           <h2 className="font-serif text-[clamp(34px,4.5vw,56px)] font-medium text-t1 leading-none mb-6">
             From flatline to <em className="text-teal-accent not-italic">full health.</em><br />In 30 days.
           </h2>
           <p className="font-sans text-lg font-light text-tm max-w-[600px] leading-relaxed mb-16">
-            We require one hour per week from you. Every system is built, tested, and launched by our team while you continue seeing patients.
+            One hour a week is the only commitment we ask of you. We build, test, and launch every system personally — while you keep seeing patients.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 bg-bg3/50 border border-b2 rounded-2xl overflow-hidden divide-y md:divide-y-0 lg:divide-x divide-b2/20">
@@ -1178,14 +979,18 @@ export default function App() {
               </div>
             ))}
           </div>
+
+          <div className="mt-8 border-l-2 border-teal-accent pl-6 py-1">
+            <p className="font-serif italic text-[18px] text-t1">By day 21, you're not hoping this works. You're already taking calls.</p>
+          </div>
         </div>
       </section>
 
       {/* 15. CLINICAL FAQ ACCORDIONS */}
       <section id="faq" className="py-14 px-5 bg-bg3 border-y border-b2/40">
         <div className="max-w-[800px] mx-auto">
-          <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4 mx-auto justify-center w-full">
-            <span className="w-5.5 h-[1px] bg-teal-accent"></span>
+          <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4 mx-auto justify-center w-full kicker-glow">
+            <span className="w-5.5 h-[1px] bg-teal-accent dash-glow"></span>
             CLINICAL REBUTTALS
           </div>
           <h2 className="font-serif text-[clamp(34px,4.5vw,56px)] font-medium text-t1 leading-none mb-5 text-center">
@@ -1198,8 +1003,8 @@ export default function App() {
           <div className="border border-b2 rounded-2xl overflow-hidden divide-y divide-b2/30">
             {[
               { 
-                q: "I cannot give medical advice online. One wrong interaction and I face a board investigation or HIPAA violation.", 
-                a: "Correct — and that is precisely why your current unarchitectured DMs are the actual liability. You are already exposed every single day with no legal framework. We build a legally distinct parallel business. The community is gated as General Health Education — not personalised medical advice — with education-only waivers and HIPAA-safe disclaimers reviewed by medical compliance specialists. You move from dangerously exposed to legally shielded and financially productive." 
+                q: "Could something I say online ever be treated as medical advice?", 
+                a: "It's the right question to ask first. Your current unarchitectured DMs are already the real exposure — answered ad hoc, with no legal framework behind them. We build a legally distinct parallel structure instead: the community is gated as General Health Education, not personalised medical advice, with education-only waivers and HIPAA-safe disclaimers built on established compliance frameworks — and structured for final sign-off by your own counsel before a single member enters." 
               },
               { 
                 q: "I already work 60 hours a week. I have no bandwidth to manage a community or write newsletters.", 
@@ -1207,7 +1012,7 @@ export default function App() {
               },
               { 
                 q: "My medical colleagues will see this and think I have gone commercial. It could damage my reputation.", 
-                a: "Charging a premium for access to your expertise does not damage your credibility — it elevates your standard of care. You currently provide world-class clinical education to millions of people at zero cost. That audience takes zero action and pays you zero compensation. A paid community filters out passive browsers and validates your knowledge. This is the exact model used by Mayo Clinic and Cleveland Clinic. Your peers will ask how you built it." 
+                a: "Charging a premium for access to your expertise does not damage your credibility — it elevates your standard of care. You currently provide world-class clinical education to millions of people at zero cost. That audience takes zero action and pays you zero compensation. A paid community filters out passive browsers and validates your knowledge. Paid educational memberships are now an established model among leading physician educators and health institutions. Your peers will ask how you built it." 
               },
               { 
                 q: "I tried hiring a VA to help with my digital presence before and it created more legal risk.", 
@@ -1220,6 +1025,10 @@ export default function App() {
               { 
                 q: "How much time does this actually require from me each week?", 
                 a: "One hour per week. You record an unstructured voice note during your commute or between patients. Our AI converts that into your polished weekly newsletter. You attend no meetings, write no content, answer no DM, and manage no community. Everything else is built, operated, and optimised by our team. You continue seeing patients exactly as before — while the system generates revenue in the background." 
+              },
+              { 
+                q: "If I want to leave, do I keep the community, the list, and the content we built?", 
+                a: "Yes. The email list, the Skool community, and every piece of content published inside it are yours — built on your name and your licence from day one. If we part ways, you keep operating exactly what exists; you simply take over the ongoing management yourself or hand it to whoever you choose next." 
               },
               { 
                 q: "What is Skool and why is it used instead of a custom platform?", 
@@ -1268,8 +1077,8 @@ export default function App() {
       {/* 16. CLIENT PERSONAS (ADMISSION PROFILES) */}
       <section id="personas" className="py-14 px-5 bg-bg2">
         <div className="max-w-[1160px] mx-auto">
-          <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4">
-            <span className="w-5.5 h-[1px] bg-teal-accent"></span>
+          <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4 kicker-glow">
+            <span className="w-5.5 h-[1px] bg-teal-accent dash-glow"></span>
             ADMISSION PROFILES
           </div>
           <h2 className="font-serif text-[clamp(34px,4.5vw,56px)] font-medium text-t1 leading-none mb-6">
@@ -1281,10 +1090,10 @@ export default function App() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4.5">
             {[
-              { letter: "A", type: "BEST CLIENT &middot; PRIMARY TARGET", name: "The Geographically-Trapped Visionary", pain: "Cash-pay clinic owner. 100K–500K followers. Globally famous, locally imprisoned. DMs flood with patients in 40 countries. Viral dopamine followed by financial silence. The most acute Leaky Bucket case.", rx: "Prescription: 'Health-at-Scale' — geographic liberation through a compliant global education campus." },
-              { letter: "B", type: "SECONDARY TARGET", name: "The Burnout-Driven FIRE Aspirant", pain: "Hospital physician. FIRE-movement devotee. Treats the medical degree as a cash engine for buying freedom. Paralysed by tech complexity. Drowning in insurance bureaucracy and EHR documentation.", rx: "Prescription: 'Digital real estate' — community subscriptions framed as monthly rent from an owned asset." },
-              { letter: "C", type: "HIGHEST COMPLIANCE CONCERN", name: "The Ethical and Skeptical Sage", pain: "MD/PhD who went viral accidentally. Credibility is everything. Deeply suspicious of all commercial intent. Frozen by legal liability fears. Hangs up on any pitch that sounds like marketing.", rx: "Prescription: 'Compliance-First Education Infrastructure' — never a funnel, never a campaign, never an agency." },
-              { letter: "D", type: "HIGH URGENCY PROFILE", name: "The Rebel Disruptor", pain: "Anti-establishment MD with a tribal following. Terrified of de-platforming. Depends entirely on algorithms he publicly condemns. No owned audience. Revenue collapses with every policy update.", rx: "Prescription: 'Digital sovereignty' — an uncancellable community that no algorithm or platform can touch." }
+              { letter: "A", type: "ADMISSION PROFILE A &middot; THE MOST ACUTE CASE", name: "The Geographically-Trapped Visionary", pain: "Cash-pay clinic owner. 100K–500K followers. Globally famous, locally imprisoned. DMs flood with patients in 40 countries. Viral dopamine followed by financial silence. The most acute Leaky Bucket case.", rx: "Prescription: 'Health-at-Scale' — geographic liberation through a compliant global education campus." },
+              { letter: "B", type: "ADMISSION PROFILE B &middot; THE FREEDOM SEEKER", name: "The Burnout-Driven FIRE Aspirant", pain: "Hospital physician counting the years to financial independence. Wants medicine to buy back time — not consume all of it. Blocked by tech complexity, drowning in EHR documentation and insurance bureaucracy.", rx: "Prescription: 'Digital real estate' — community subscriptions framed as monthly rent from an owned asset." },
+              { letter: "C", type: "ADMISSION PROFILE C &middot; THE CAREFUL SCEPTIC", name: "The Ethical and Skeptical Sage", pain: "MD/PhD who went viral accidentally. Credibility is everything. Deeply suspicious of all commercial intent. Frozen by legal liability fears. Hangs up on any pitch that sounds like marketing.", rx: "Prescription: 'Compliance-First Education Infrastructure' — never a funnel, never a campaign, never an agency." },
+              { letter: "D", type: "ADMISSION PROFILE D &middot; THE PLATFORM HOSTAGE", name: "The Rebel Disruptor", pain: "Independent-minded MD with a fiercely loyal following. Years of reach built on platforms that can change the rules overnight. One policy update from losing it all, with no owned channel to fall back on.", rx: "Prescription: 'Digital sovereignty' — an uncancellable community that no algorithm or platform can touch." }
             ].map((persona, idx) => (
               <div key={idx} className="bg-bg3 border border-b2 rounded-2xl p-7 flex flex-col justify-between hover:border-teal-accent/20 transition-all duration-300">
                 <div>
@@ -1309,24 +1118,24 @@ export default function App() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full bg-gradient-to-br from-teal-accent/10 to-transparent blur-[120px] pointer-events-none"></div>
         
         <div className="max-w-[700px] mx-auto relative z-10">
-          <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4">
-            <span className="w-5.5 h-[1px] bg-teal-accent"></span>
-            ADMIT YOUR BUSINESS TODAY
+          <div className="inline-flex items-center gap-2 text-teal-accent font-mono text-[10px] uppercase tracking-widest mb-4 kicker-glow">
+            <span className="w-5.5 h-[1px] bg-teal-accent dash-glow"></span>
+            ADMISSIONS OPEN NOW
           </div>
           <h2 className="font-serif text-[clamp(40px,5.5vw,72px)] font-semibold text-t1 leading-[1.1] mb-6">
             Stop the <em className="text-red-accent not-italic font-bold">bleed.</em><br />Book your free diagnostic.
           </h2>
-          <p className="font-sans text-lg font-light text-tm leading-relaxed mb-10 max-w-[560px] mx-auto">
-            You already know the problem is real. You feel it every time a video goes viral and the bank account stays flat. We analyse your specific social media presence, calculate your exact Daily Bleed Rate, and present a precise treatment plan tailored to your audience size, niche, and current infrastructure. 30 minutes. Free. No pitch.
+          <p className="font-sans text-lg font-light text-tm leading-relaxed mb-8 max-w-[520px] mx-auto">
+            You already feel this every time a video goes viral and the account stays flat. In 30 minutes, we calculate your exact bleed rate and hand you a treatment plan built for your niche. Free. No pitch.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto justify-center mb-2">
             <button 
               onClick={handleOpenCalendly}
               className="flex-1 bg-teal-accent text-bg1 font-sans text-base font-bold px-8 py-4.5 rounded-lg hover:opacity-90 transform hover:-translate-y-0.5 transition-all cursor-pointer shadow-lg"
               id="final-cta-calendly"
             >
-              Book Your Free Diagnostic &rarr;
+              Book your free diagnostic &rarr;
             </button>
             <a 
               href={finalWhatsappUrl}
@@ -1336,13 +1145,15 @@ export default function App() {
               id="final-cta-whatsapp"
             >
               <MessageSquare size={16} className="text-[#25D366]" />
-              Chat on WhatsApp
+              Just ask a question first
             </a>
           </div>
+          <p className="text-[11px] text-tg mb-6">We reply personally, usually within the hour — no bot, no script.</p>
 
-          <div className="text-xs text-tm mt-4.5">No commitment required. No agency proposal. Just your numbers.</div>
-          <div className="font-mono text-[10px] tracking-widest text-tg uppercase mt-10">
-            WE ADMIT A MAXIMUM OF 4 NEW CLIENTS PER MONTH &mdash; AVAILABLE SLOTS THIS QUARTER ARE CLOSING
+          <div className="text-xs text-tm mt-2">No commitment. No proposal. Just your numbers.</div>
+          <div className="w-[60px] h-[0.5px] bg-b2 mx-auto mt-8 mb-5"></div>
+          <div className="font-mono text-[10px] tracking-wider text-tg leading-relaxed max-w-[440px] mx-auto">
+            We admit a maximum of four practices per month — every build is delivered personally, not handed to a junior team.
           </div>
         </div>
       </section>
@@ -1368,15 +1179,6 @@ export default function App() {
 
       {/* 19. FLOATING INSTRUMENT WIDGET (QUICK LINKS + STATUS) */}
       <div className="fixed bottom-6 right-6 z-150 flex flex-col gap-2.5 items-end">
-        {/* Realtime Loss Indicator Pill */}
-        <div className="bg-bg1/90 border border-b2 px-3 py-1.5 rounded-full shadow-[0_4px_12px_rgba(0,0,0,0.5)] flex items-center gap-2 text-[10px] font-mono select-none backdrop-blur-md">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-accent opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-red-accent"></span>
-          </span>
-          <span className="text-red-accent font-semibold">${accumulatedLoss.toFixed(2)} LOST</span>
-        </div>
-
         {/* Floating Dialer Expandable */}
         <div className="flex gap-2">
           {/* WhatsApp floating trigger */}
@@ -1470,76 +1272,6 @@ export default function App() {
               <div className="px-6 py-3 border-t border-b1 bg-bg3 flex items-center justify-between font-mono text-[10px] text-tg uppercase">
                 <span>The Digital ICU Automated Connector</span>
                 <span className="text-teal-accent">LIVE LINK SECURED</span>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* 21. VSL VIDEO MODAL FOR DEMONSTRATING CLINICAL AUDITS */}
-      <AnimatePresence>
-        {isVideoModalOpen && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[200] bg-black/90 flex items-center justify-center p-4 backdrop-blur-sm"
-          >
-            <motion.div 
-              initial={{ scale: 0.95, y: 15 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.95, y: 15 }}
-              className="bg-bg1 border border-b2 rounded-2xl w-full max-w-[820px] aspect-video flex flex-col overflow-hidden shadow-2xl relative"
-            >
-              <button 
-                onClick={() => setIsVideoModalOpen(false)}
-                className="absolute top-4 right-4 text-white bg-black/50 hover:bg-black/80 p-2 rounded-full transition-all cursor-pointer z-50 border border-white/10"
-                id="btn-close-vsl-modal"
-              >
-                <X size={16} />
-              </button>
-
-              {/* We provide a beautiful, clinical interactive diagnostic presentation that behaves like a real audit */}
-              <div className="flex-1 flex flex-col items-center justify-center bg-bg2 p-10 text-center relative overflow-hidden">
-                <div className="absolute inset-0 bg-[radial-gradient(rgba(0,201,167,0.04)_1px,transparent_1px)] bg-[size:20px_20px]"></div>
-                
-                <div className="max-w-md mx-auto relative z-10">
-                  <div className="w-14 h-14 rounded-full bg-teal-accent/10 border border-teal-accent/20 text-teal-accent flex items-center justify-center mx-auto mb-6">
-                    <HeartPulse size={26} className="animate-bounce" />
-                  </div>
-                  <h3 className="font-serif text-2xl font-medium text-t1 mb-3">Live Diagnostic Stream</h3>
-                  <p className="text-xs text-tm font-mono mb-6 leading-relaxed uppercase tracking-wider">
-                    SIMULATION STATUS: DIGITAL ICU AUDIT SEQUENCE INITIALIZED
-                  </p>
-                  
-                  <div className="bg-bg3 border border-b2 rounded-lg p-5 text-left font-mono text-[11px] text-teal-accent mb-6 leading-relaxed space-y-2 max-h-[160px] overflow-y-auto">
-                    <div>&gt; Loading medical-influencer top of funnel telemetry...</div>
-                    <div>&gt; Followers count: {followers.toLocaleString()} identified.</div>
-                    <div>&gt; Flatline revenue detected ($0 MRR captured).</div>
-                    <div>&gt; Calculating clinical leakage: ${(dailyRevenueLost).toLocaleString()}/day bleed rate.</div>
-                    <div className="text-red-accent animate-pulse">&gt; WARNING: State licensing border limits detected. HIPAA compliance gates missing.</div>
-                    <div className="text-white">&gt; READY to route your custom scheduling links...</div>
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <button 
-                      onClick={() => {
-                        setIsVideoModalOpen(false);
-                        setIsBookingModalOpen(true);
-                      }}
-                      className="flex-1 bg-teal-accent text-bg1 font-sans text-xs font-bold py-3.5 rounded-lg hover:opacity-90 cursor-pointer"
-                      id="vsl-book-btn"
-                    >
-                      BOOK DIAGNOSIS
-                    </button>
-                    <button 
-                      onClick={() => setIsVideoModalOpen(false)}
-                      className="flex-1 bg-transparent hover:bg-bg4 border border-b2 text-tm hover:text-white font-sans text-xs font-medium py-3.5 rounded-lg"
-                    >
-                      CONTINUE DIAGNOSIS
-                    </button>
-                  </div>
-                </div>
               </div>
             </motion.div>
           </motion.div>
