@@ -112,3 +112,10 @@ body {
   animation: drawEKG 3s ease 1.3s forwards;
 }
 
+/* Restrained glow — kickers only, never on headline text */
+.kicker-glow {
+  text-shadow: 0 0 6px rgba(93, 202, 165, 0.55);
+}
+.dash-glow {
+  box-shadow: 0 0 6px rgba(93, 202, 165, 0.8);
+}
